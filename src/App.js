@@ -4,17 +4,22 @@ import React from 'react';
 import logo from './logo.svg';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
-import {moviesData} from './moviesData';
+//import {moviesData} from './moviesData';
 import MovieItem from './Movieitem';
+import {API_URL, API_KEY_3} from './api.js';
+import MovieTabs from './MovieTabs.js';
+
 
 
 
 class App extends React.Component{
+	
 	constructor(){
 		super();
 		this.state={
-			movies: moviesData,
-			movieWillWatch: []
+			movies: [],
+			movieWillWatch: [],
+			sort_by: "popularity.desc"
 			
 		};
 	}
@@ -43,13 +48,40 @@ class App extends React.Component{
 	this.setState({
 		movieWillWatch: updateMovieWillWatch
 	});
-}
+} 
+	componentDidMount() {
+    console.log();
+    fetch(
+    `${API_URL}/discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}`
+    )
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log();
+        this.setState({
+          movies: data.results
+        });
+      });
+  }
+	updateSortBy=value=>{
+		this.setState({
+			sort_by: value
+		});
+	}	
 	
 	render(){
      return (
     <div className="container">
 		<div className="row"> 
 		 <div className="col-9">
+		 <div className="row mb-4">
+		 <div className="col-12">
+		 <MovieTabs sort_by={this.state.sort_by}
+		 updateSortBy={this.updateSortBy}
+		 />
+		 </div>
+		 </div>	
 		 <div className="row">
 		 {this.state.movies.map(movie=>{
 		 return(
