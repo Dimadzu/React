@@ -9,6 +9,7 @@ import MovieItem from './Movieitem';
 import {API_URL, API_KEY_3} from './api.js';
 import MovieTabs from './MovieTabs.js';
 import Pagination from './Pagination.js';
+import Detalis from './Detalis';
 
 
 
@@ -22,7 +23,8 @@ class App extends React.Component{
 			movieWillWatch: [],
 			sort_by: "popularity.desc",
 			page: 1,
-			totalPages: " "
+			totalPages: " ",
+			showDetalis: true
 			
 		};
 	}
@@ -54,7 +56,7 @@ class App extends React.Component{
 	componentDidMount() {
      this.getMovies();
  
-  };
+  }; 
 
  componentDidUpdate(prevProps, prevState){
 	  if((prevState.page!==this.state.page) || (prevState.sort_by!==this.state.sort_by)){
@@ -70,6 +72,7 @@ class App extends React.Component{
         return response.json();
       })
       .then(data => {
+		console.log(data);
         this.setState({
           movies: data.results,
 		  totalPages: data.total_pages	
@@ -82,6 +85,11 @@ class App extends React.Component{
 			sort_by: value
 		});
 	}
+	update_showDetalis=()=>{
+		this.setState({
+			showDetalis: false
+		});
+	}
 	
 	paginationPage=pagevalue=>{
 		this.setState({
@@ -90,11 +98,10 @@ class App extends React.Component{
 	}
 	
 	render(){
-		console.log(this.state.totalPages);
      return (
     <div className="container">
 		<div className="row"> 
-		 <div className="col-9">
+		 <div className="col-10">
 		 <div className="row mb-4">
 		 <div className="col-12">
 		 <MovieTabs sort_by={this.state.sort_by}
@@ -102,12 +109,14 @@ class App extends React.Component{
 		 />
 		 </div>
 		 </div>	
+		 {this.state.showDetalis===true ? (
 		 <div className="row">
 		 {this.state.movies.map(movie=>{
 		 return(
 		 <div className="col-6" key={movie.id}>
 		 <MovieItem 
 		  movie={movie}
+		  show={this.update_showDetalis}
 		  removeMovie={this.removeMovie}
 		 addmovieToWillWatch={this.addmovieToWillWatch}
 		 removeMovieFromWillWatch={this.removeMovieFromWillWatch}/>
@@ -115,7 +124,9 @@ class App extends React.Component{
 		 </div> 
 		 ) 
 		 })}
-		 </div>
+		 </div>) : (
+			< Detalis/> 
+		 )}
 		  <div className="row mb-4">
 		 <div className="col-12">
 		 <Pagination
@@ -125,7 +136,7 @@ class App extends React.Component{
 		 </div>
 		 </div>	
 	      </div> 
-      <div className="col-3">
+      <div className="col-2">
 		  <p>Will watch: {this.state.movieWillWatch.length}</p>
 		  </div>
 	 	</div> 
@@ -134,12 +145,5 @@ class App extends React.Component{
 	}
 };
 
-//function App() {
-//  return (
-//    <div className="App">
-//     <h2>{moviesData[0].title}</h2>
-//    </div>
-//  );
-//}
 
 export default App;

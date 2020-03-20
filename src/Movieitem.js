@@ -8,11 +8,14 @@ class MovieItem extends React.Component{
 			
 		};
 		
-	}
+  }
+ 
 	
+
 	render(){
-	const{movie, removeMovie, addmovieToWillWatch,removeMovieFromWillWatch}= this.props;
-		
+  const{movie, removeMovie, addmovieToWillWatch,removeMovieFromWillWatch, show}= this.props;
+  let overview=(movie.overview).substring(0, 90);
+	
 	 return (<div className="card">
 	 <img
      className="card-img-top"
@@ -21,9 +24,15 @@ class MovieItem extends React.Component{
      alt=""
      />
         <div className="card-body">
-     <h6 className="card-title">{movie.title}</h6>
-     <div className="d-flex justify-content-between align-items-center">
-       <p className="mb-0">Rating: {movie.vote_average}</p>
+     <h5 className="card-title">{movie.title}</h5>
+    
+       <div className="cont">
+         <div className="border_cont">
+           <h3>{movie.vote_average}</h3>
+         </div>
+       </div>
+  <p className="overview">{overview}...<a className="more"  onClick={ show }>more</a></p>
+  <div className="flexButton">
        {this.state.willWatch ? ( <button type="button" className="btn btn-sucess" onClick={ () =>
        {this.setState({
        willWatch: false
@@ -40,8 +49,9 @@ addmovieToWillWatch(movie)}}>
          Add Will Watch
        </button>)}
        
-     </div>
+    
 		 <button onClick={removeMovie.bind(null,movie)}>Delete item</button>
+     </div>
 </div>
 </div>
 		 );
