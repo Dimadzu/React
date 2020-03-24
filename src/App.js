@@ -9,7 +9,7 @@ import MovieItem from './Movieitem';
 import {API_URL, API_KEY_3} from './api.js';
 import MovieTabs from './MovieTabs.js';
 import Pagination from './Pagination.js';
-import Detalis from './Detalis';
+import Detalis from './Detalis.js';
 
 
 
@@ -24,7 +24,8 @@ class App extends React.Component{
 			sort_by: "popularity.desc",
 			page: 1,
 			totalPages: " ",
-			showDetalis: true
+			showDetalis: true,
+			return_movie: ""
 			
 		};
 	}
@@ -72,7 +73,6 @@ class App extends React.Component{
         return response.json();
       })
       .then(data => {
-		console.log(data);
         this.setState({
           movies: data.results,
 		  totalPages: data.total_pages	
@@ -85,9 +85,11 @@ class App extends React.Component{
 			sort_by: value
 		});
 	}
-	update_showDetalis=()=>{
+	update_showDetalis=(showc, movie_detalis)=>{
 		this.setState({
-			showDetalis: false
+			showDetalis: showc,
+			return_movie: movie_detalis
+
 		});
 	}
 	
@@ -96,6 +98,11 @@ class App extends React.Component{
 			page: pagevalue
 		});
 	}
+	// return_movie_detalis=movie_detalis=>{
+	// 	this.setState({
+	// 		return_movie: movie_detalis
+	// 	});
+	// }
 	
 	render(){
      return (
@@ -109,7 +116,7 @@ class App extends React.Component{
 		 />
 		 </div>
 		 </div>	
-		 {this.state.showDetalis===true ? (
+		 {this.state.showDetalis==true ? (
 		 <div className="row">
 		 {this.state.movies.map(movie=>{
 		 return(
@@ -119,13 +126,17 @@ class App extends React.Component{
 		  show={this.update_showDetalis}
 		  removeMovie={this.removeMovie}
 		 addmovieToWillWatch={this.addmovieToWillWatch}
-		 removeMovieFromWillWatch={this.removeMovieFromWillWatch}/>
+		 removeMovieFromWillWatch={this.removeMovieFromWillWatch}
+		 return_movie_detalis={this.return_movie_detalis}/>
 
 		 </div> 
 		 ) 
 		 })}
 		 </div>) : (
-			< Detalis/> 
+			< Detalis 
+			show={this.update_showDetalis}
+			return_movie={this.state.return_movie}
+			/> 
 		 )}
 		  <div className="row mb-4">
 		 <div className="col-12">

@@ -11,11 +11,18 @@ class Detalis extends React.Component{
 	}
 	
 	render(){
-//   const{movie, removeMovie, addmovieToWillWatch,removeMovieFromWillWatch}= this.props;
-  
-		
-	 return (<div className="card_detalis">
-	
+  const{show, return_movie}= this.props;
+  console.log(return_movie);
+  const show_click=showc=>{
+	return()=>{
+	show(showc)}; 
+;
+}
+
+	 return (
+	 <div className="card_detalis">
+	<button className="prev" onClick={show_click(true)}>Назад</button>
+	 <h3>{return_movie.title}</h3>
     </div>
 		 );
 }
