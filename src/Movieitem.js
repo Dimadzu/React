@@ -14,36 +14,38 @@ class MovieItem extends React.Component{
 	
 
 	render(){
-  const{movie, removeMovie, addmovieToWillWatch,removeMovieFromWillWatch, show, return_movie_detalis}= this.props;
+  const{movie, removeMovie, addmovieToWillWatch,removeMovieFromWillWatch, show}= this.props;
   let overview=(movie.overview).substring(0, 90);
-  const show_click=(showc, movie_detalis) =>{
+  // стиль для прогрессбара
+  let style_progress={
+    width: `${movie.vote_average}`*10+"%"
+  }
+  // переменная с изобраениями фильмов
+  let img_src=(
+    `${movie.backdrop_path ||
+      movie.poster_path}`!=="null" ? (`https://image.tmdb.org/t/p/w500${movie.backdrop_path ||
+        movie.poster_path}`) : ("https://i.pinimg.com/originals/6b/47/fc/6b47fc6e834133f96124726200c4e2d7.jpg")
+  )
+   
+  
+  const show_click=(showc, movie_detalis, img_detalis) =>{
 		return()=>{
-    show(showc, movie_detalis); }
+    show(showc, movie_detalis, img_detalis); }
   
   }
-  // const  return_movie=movie_detalis=>{
-  //   return()=>{
-  //     return_movie_detalis(movie_detalis);
-  //   }
-  // }
-  
-
 	 return (<div className="card">
 	 <img
      className="card-img-top"
-     src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path ||
-       movie.poster_path}`} 
+     src={img_src} 
      alt=""
      />
         <div className="card-body">
      <h5 className="card-title">{movie.title}</h5>
-    
-       <div className="cont">
-         <div className="border_cont">
-           <h3>{movie.vote_average}</h3>
-         </div>
+      <p className="rating">rating movie</p>
+       <div className="progress">
+       <div className="progress-bar" role="progressbar" style={style_progress} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{movie.vote_average}</div>
        </div>
-  <p className="overview">{overview}...<a className="more"  onClick={show_click(false, movie) }>more</a></p>
+  <p className="overview">{overview}...<a className="more"  onClick={show_click(false, movie, img_src) }>more</a></p>
   <div className="flexButton">
        {this.state.willWatch ? ( <button type="button" className="btn btn-sucess" onClick={ () =>
        {this.setState({
