@@ -1,4 +1,12 @@
 .btn-sucess {background-color: black; color: white}
+/* меню для хедера */
+.header_cont{align-items: center;text-align: center;padding-top: 40px;padding-bottom: 10px;}
+.header_cont h1{color: black;font-weight: 500;}
+.header_cont span{color: green;}
+.sort{padding-bottom: 20px;}
+.dropdown-toggle{width: 60%;}
+.flex_sort{display: flex;}
+.dropdown{z-index: 100;}
 /* стиль для MovieItems */
 .card{border: 1px solid thistle;}
 .rating{color: green;padding: 0%;}
@@ -9,7 +17,7 @@ background-color: black;padding: 6px;}
 border: 3px solid chartreuse;z-index: 20;text-align: center;}
 .border_cont h3{color: white;font-size: 20px;margin-top: 13px;}
 .flexButton{display: flex;width: 100%;justify-content: space-between;}
-.btn-secondary{background-color: green;color: white;}
+.btn-secondary{color: white;}
 .btn-sucess{background-color: white; color: black;}
 
 /* стиль для карточки детально о фильме */

@@ -9,6 +9,7 @@ import {API_URL, API_KEY_3} from './api.js';
 import MovieTabs from './MovieTabs.js';
 import Pagination from './Pagination.js';
 import Detalis from './Detalis.js';
+import Selectyear from './Selectyear.js';
 
 
 
@@ -25,7 +26,8 @@ class App extends React.Component{
 			totalPages: " ",
 			showDetalis: true,
 			return_movie: "",
-			img_d: ""
+			img_d: "",
+			year: 2015
 			
 		};
 	}
@@ -62,7 +64,7 @@ class App extends React.Component{
   }; 
 // обновление компонентов (новый рендер)
  componentDidUpdate(prevProps, prevState){
-	  if((prevState.page!==this.state.page) || (prevState.sort_by!==this.state.sort_by)){
+	  if((prevState.page!==this.state.page) || (prevState.sort_by!==this.state.sort_by) || (prevState.year!==this.state.year)){
 	this.getMovies();
 	  }
 	  
@@ -70,7 +72,8 @@ class App extends React.Component{
 //   выделенная функция для подключения API
     getMovies=()=>{
 	   fetch(
-    `${API_URL}/discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}&page=${this.state.page}&page.maximum`
+	`${API_URL}/discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}&page=${this.state.page}&page.maximum&year=
+	${this.state.year}`
     )
       .then(response => {
         return response.json();
@@ -78,12 +81,19 @@ class App extends React.Component{
       .then(data => {
         this.setState({
           movies: data.results,
-		  totalPages: data.total_pages	
+		  totalPages: data.total_pages,	
         });
       });	
 		
 	}
-	// функция для сортировки фильмов
+	// функция для сортировки фильмов по дате
+	sort_year=(add_year)=>{
+		this.setState({
+			year: add_year
+		});
+
+	}
+	//функция для сортировки фильмов
 	updateSortBy=value=>{
 		this.setState({
 			sort_by: value
@@ -105,17 +115,33 @@ class App extends React.Component{
 		});
 	}
 	render(){
+
      return (
     <div className="container-fuild">
+		<div className="row">
+		<div className="col-12 header_cont">
+			<h1>Discover New Movies & TV Shows
+                                               <a href="#"> Movies</a>  <span>TV Shows</span></h1>
+		</div>
+			</div> 
  {this.state.showDetalis==true ? (
 		<div className="row"> 
 		 <div className="col-10">
-		 <div className="row mb-8">
-		 <div className="col-12">
+		 <div className="row mb-8 sort">
+		 <div className="col-1"></div>	 
+		 <div className="col-3">
+		<span>Year</span>	 
+		<Selectyear
+		year={this.state.year}
+		sort_year={this.sort_year}/>
+		</div>
+		<div className="col-4">
+		<span>Sort_by</span>	 
 		 <MovieTabs sort_by={this.state.sort_by}
 		 updateSortBy={this.updateSortBy}
 		 />
-		 </div>
+		  </div>
+		 
 		 </div>	
 		 <div className="row mb-4 pl-5">
 		 {this.state.movies.map(movie=>{
